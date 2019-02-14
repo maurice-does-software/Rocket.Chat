@@ -13,8 +13,21 @@ import Settings from './settings';
 
 let grant;
 
+let MongoDBStore = require('connect-mongodb-session')(session);
+let store = new MongoDBStore(
+  {
+    uri: 'mongodb://127.0.0.1:27017/connect_mongodb_session',
+    databaseName: 'connect_mongodb_session',
+    collection: 'mySessions'
+  },
+  function(error) {
+    console.log(error);
+  }
+);
+
 WebApp.connectHandlers.use(session({
 	secret: 'grant',
+	store: store,
 	resave: true,
 	saveUninitialized: true,
 }));
